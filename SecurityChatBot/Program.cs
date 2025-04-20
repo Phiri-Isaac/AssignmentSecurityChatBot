@@ -29,7 +29,7 @@ class Program
         string name = "";
         while (string.IsNullOrWhiteSpace(name))
         {
-            Console.Write("Please enter your name: ");
+            Console.Write("Please enter your name or nickname you would like me to call you: ");
             name = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(name))
             {
