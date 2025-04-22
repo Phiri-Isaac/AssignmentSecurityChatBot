@@ -6,7 +6,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.Title = "I-S-A-A-C - Your Security Awareness Assistant";
+        Console.Title = "I-S-A-A-C - Your Security Awareness Assistant"; //Program name
         Console.ForegroundColor = ConsoleColor.Cyan;
 
         PlayVoiceGreeting(); // ✅ Play WAV file using PowerShell
@@ -141,27 +141,27 @@ class Program
             // Keyword-based chatbot replies
             if (input.Contains("how are you"))
             {
-                SimulateTyping("I'm functioning optimally and always on the lookout for cyber threats!");
+                SimulateTyping("I'm pretty good could be better but atleast I'm always on the lookout for cyber threats!");
             }
             else if (input.Contains("your purpose"))
             {
-                SimulateTyping("My mission is to educate and guide you through online safety practices.");
+                SimulateTyping("My Job is to educate and help you through online safety practices.");
             }
             else if (input.Contains("password"))
             {
-                SimulateTyping("Always use strong passwords: 8+ characters, mix of letters, numbers, and symbols.");
+                SimulateTyping("Be creative and use strong passwords: 8+ characters, with a combination of letters, numbers, and symbols.");
             }
             else if (input.Contains("phishing"))
             {
-                SimulateTyping("Phishing is when attackers trick you into giving up info. Always verify emails!");
+                SimulateTyping("Phishing is when attackers trick you into giving up info. Always make sure emails are from legit people or company");
             }
             else if (input.Contains("safe browsing"))
             {
-                SimulateTyping("Stick to secure sites (HTTPS), avoid shady links, and don’t download untrusted files.");
+                SimulateTyping("Stick to secure sites (HTTPS), avoid shady links, and don’t download untrusted files, because they lead to unwanted viruses.");
             }
             else if (input.Contains("exit") || input.Contains("bye"))
             {
-                SimulateTyping("Goodbye! Stay sharp and safe online.");
+                SimulateTyping("See you, Stay sharp and safe online.");
                 break;
             }
             else
