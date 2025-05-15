@@ -1,11 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
 
 class Program
 {
-    
     static Random rand = new Random();
+
+    //**** MEMORY AND STATE ****//
+    static List<string> pastInputs = new List<string>();
 
     static void Main(string[] args)
     {
@@ -115,7 +119,7 @@ class Program
         SimulateTyping("C – Control\n");
         Console.ResetColor();
 
-        SimulateTyping("Ask me about phishing, passwords, safe browsing, or just chat!\n");
+        SimulateTyping("Ask me about phishing, passwords, safe browsing, or just chat!\nType 'help' if you’re unsure what to ask.\n");
     }
 
     //**** CHAT LOOP ****//
@@ -137,9 +141,36 @@ class Program
                 continue;
             }
 
+            // Store in memory
+            pastInputs.Add(input);
+
+            // Basic sentiment detection
+            bool isPositive = input.Contains("good") || input.Contains("great") || input.Contains("thanks");
+            bool isNegative = input.Contains("bad") || input.Contains("terrible") || input.Contains("hate") || input.Contains("annoying");
+
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("I-S-A-A-C: ");
             Console.ResetColor();
+
+            // Memory-based reminders
+            if (pastInputs.Count(i => i.Contains("phishing")) > 2)
+            {
+                SimulateTyping("You’ve asked about phishing a few times — remember to always double-check links!");
+            }
+            else if (pastInputs.Count(i => i.Contains("password")) > 2)
+            {
+                SimulateTyping("We’ve covered passwords quite a bit! Consider using a manager to help remember them.");
+            }
+
+            // Sentiment responses
+            if (isPositive)
+            {
+                SimulateTyping("Glad to hear that! 😊");
+            }
+            else if (isNegative)
+            {
+                SimulateTyping("Sorry to hear that. If there’s anything I can do to help, let me know.");
+            }
 
             // Keyword-based chatbot replies
             if (input.Contains("how are you"))
@@ -154,45 +185,46 @@ class Program
             {
                 string[] responses = {
                     "Be creative and use strong passwords: 8+ characters, with a combination of letters, numbers, and symbols.",
-                    "To be safe use a different password for other online accounts you might have, but keep track of them as well.",
-                    "Make use of the auto generated passowrds, write it down and save for easier access.",
-                    "If you have multi-factor authentication use it, it helps keep your accounts safe and secure."
+                    "Use different passwords for different accounts, and track them with a password manager.",
+                    "Use the auto-generated passwords, write them down securely or store them in a manager.",
+                    "Enable multi-factor authentication wherever you can. It’s a strong second layer of protection."
                 };
                 int index = rand.Next(responses.Length);
                 SimulateTyping(responses[index]);
-                break;
             }
             else if (input.Contains("phishing"))
             {
                 string[] responses = {
-                    "Phishing is when attackers trick you into giving up info. Always make sure emails are from legit people or company.",
-                    "You should always double back and check if the email that was sent to you was from a trusted source.",
-                    "Make sure you ignore emails that contain anything asking you for any personal information.",
-                    "If something doesn't add up in an email you received, be careful, it might be a trap!"
+                    "Phishing is when attackers trick you into giving up info. Always make sure emails are from legit people or companies.",
+                    "Double check if that email you received is from a trusted source before clicking links.",
+                    "Avoid emails asking for personal info — that’s a red flag.",
+                    "If something feels off in an email — trust your gut. Don't click suspicious links."
                 };
-
                 int index = rand.Next(responses.Length);
                 SimulateTyping(responses[index]);
             }
             else if (input.Contains("safe browsing"))
             {
-                string[] responses = { 
-                        "Stick to secure sites (HTTPS), avoid shady links, and don’t download untrusted files, because they lead to unwanted viruses.",
-                        "Don't download just anything from the internet without double checking if its from a trusted website and if your device alerts you there could be something wrong trust it!",
-                        "Don't be shy to use adblockers they add another layer of security for your safety",
-                        "Keep your browser updated to make sure your using the latest version to further keep you protected"
+                string[] responses = {
+                    "Stick to secure sites (HTTPS), avoid shady links, and don’t download untrusted files.",
+                    "Use a trusted browser with security features, and always update it.",
+                    "Don’t download random files — even if it looks like a game mod or crack, it might be malware.",
+                    "Install an ad blocker and stay clear of sketchy popups."
                 };
                 int index = rand.Next(responses.Length);
                 SimulateTyping(responses[index]);
-               
+            }
+            else if (input.Contains("help"))
+            {
+                DisplayHelp();
             }
             else if (input.Contains("exit") || input.Contains("bye"))
             {
-                string[] responses = { 
+                string[] responses = {
                     "See you! Stay sharp and safe online.",
-                    "Our time was good while it lasted, I hope I helped, bye",
-                    "Don't talk to strangers online who are asking for your personal information, see you chief!",
-                    "Come again soon, byeeeee"
+                    "Our time was good while it lasted, I hope I helped, bye.",
+                    "Don't talk to strangers online who are asking for your personal information. See you, chief!",
+                    "Come again soon, byeeeee."
                 };
                 int index = rand.Next(responses.Length);
                 SimulateTyping(responses[index]);
@@ -200,7 +232,7 @@ class Program
             }
             else
             {
-                SimulateTyping("Hmm... I didn’t quite understand that. Could you rephrase?");
+                SimulateTyping("Hmm... I didn’t quite understand that. Type 'help' if you’re stuck.");
             }
 
             Console.WriteLine(); // Add spacing
@@ -217,4 +249,23 @@ class Program
         }
         Console.WriteLine();
     }
+
+    //**** HELP COMMAND OUTPUT ****//
+    static void DisplayHelp()
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        SimulateTyping("Here’s what you can ask me about:");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        SimulateTyping("- 'phishing' → Learn how to spot and avoid phishing attempts.");
+        SimulateTyping("- 'password' → Get advice on creating strong passwords.");
+        SimulateTyping("- 'safe browsing' → Stay protected while surfing online.");
+        SimulateTyping("- 'how are you' → Have a casual chat with me.");
+        SimulateTyping("- 'exit' or 'bye' → End our session.");
+        Console.ResetColor();
+    }
+
+    //**** FUTURE MODULE PLACEHOLDER ****//
+    // static void FutureFeature() { 
+    //     // You can build additional tools here later 
+    // }
 }
