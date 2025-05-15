@@ -4,9 +4,12 @@ using System.Threading;
 
 class Program
 {
+    
+    static Random rand = new Random();
+
     static void Main(string[] args)
     {
-        Console.Title = "I-S-A-A-C - Your Security Awareness Assistant"; //Program name
+        Console.Title = "I-S-A-A-C - Your Security Awareness Assistant"; // Program name
         Console.ForegroundColor = ConsoleColor.Cyan;
 
         PlayVoiceGreeting(); // ✅ Play WAV file using PowerShell
@@ -141,27 +144,58 @@ class Program
             // Keyword-based chatbot replies
             if (input.Contains("how are you"))
             {
-                SimulateTyping("I'm pretty good could be better but atleast I'm always on the lookout for cyber threats!");
+                SimulateTyping("I'm pretty good, could be better, but at least I'm always on the lookout for cyber threats!");
             }
             else if (input.Contains("your purpose"))
             {
-                SimulateTyping("My Job is to educate and help you through online safety practices.");
+                SimulateTyping("My job is to educate and help you through online safety practices.");
             }
             else if (input.Contains("password"))
             {
-                SimulateTyping("Be creative and use strong passwords: 8+ characters, with a combination of letters, numbers, and symbols.");
+                string[] responses = {
+                    "Be creative and use strong passwords: 8+ characters, with a combination of letters, numbers, and symbols.",
+                    "To be safe use a different password for other online accounts you might have, but keep track of them as well.",
+                    "Make use of the auto generated passowrds, write it down and save for easier access.",
+                    "If you have multi-factor authentication use it, it helps keep your accounts safe and secure."
+                };
+                int index = rand.Next(responses.Length);
+                SimulateTyping(responses[index]);
+                break;
             }
             else if (input.Contains("phishing"))
             {
-                SimulateTyping("Phishing is when attackers trick you into giving up info. Always make sure emails are from legit people or company");
+                string[] responses = {
+                    "Phishing is when attackers trick you into giving up info. Always make sure emails are from legit people or company.",
+                    "You should always double back and check if the email that was sent to you was from a trusted source.",
+                    "Make sure you ignore emails that contain anything asking you for any personal information.",
+                    "If something doesn't add up in an email you received, be careful, it might be a trap!"
+                };
+
+                int index = rand.Next(responses.Length);
+                SimulateTyping(responses[index]);
             }
             else if (input.Contains("safe browsing"))
             {
-                SimulateTyping("Stick to secure sites (HTTPS), avoid shady links, and don’t download untrusted files, because they lead to unwanted viruses.");
+                string[] responses = { 
+                        "Stick to secure sites (HTTPS), avoid shady links, and don’t download untrusted files, because they lead to unwanted viruses.",
+                        "Don't download just anything from the internet without double checking if its from a trusted website and if your device alerts you there could be something wrong trust it!",
+                        "Don't be shy to use adblockers they add another layer of security for your safety",
+                        "Keep your browser updated to make sure your using the latest version to further keep you protected"
+                };
+                int index = rand.Next(responses.Length);
+                SimulateTyping(responses[index]);
+               
             }
             else if (input.Contains("exit") || input.Contains("bye"))
             {
-                SimulateTyping("See you, Stay sharp and safe online.");
+                string[] responses = { 
+                    "See you! Stay sharp and safe online.",
+                    "Our time was good while it lasted, I hope I helped, bye",
+                    "Don't talk to strangers online who are asking for your personal information, see you chief!",
+                    "Come again soon, byeeeee"
+                };
+                int index = rand.Next(responses.Length);
+                SimulateTyping(responses[index]);
                 break;
             }
             else
