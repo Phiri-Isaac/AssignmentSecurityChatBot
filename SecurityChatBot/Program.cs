@@ -10,13 +10,14 @@ class Program
 
     //**** MEMORY AND STATE ****//
     static List<string> pastInputs = new List<string>();
+    static Dictionary<string, string> memory = new Dictionary<string, string>();
 
     static void Main(string[] args)
     {
-        Console.Title = "I-S-A-A-C - Your Security Awareness Assistant"; // Program name
+        Console.Title = "I-S-A-A-C - Your Security Awareness Assistant";
         Console.ForegroundColor = ConsoleColor.Cyan;
 
-        PlayVoiceGreeting(); // ✅ Play WAV file using PowerShell
+        PlayVoiceGreeting();
         ShowAsciiLogo();
         ShowWelcomeMessage();
 
@@ -119,7 +120,7 @@ class Program
         SimulateTyping("C – Control\n");
         Console.ResetColor();
 
-        SimulateTyping("Ask me about phishing, passwords, safe browsing, or just chat!\nType 'help' if you’re unsure what to ask.\n");
+        SimulateTyping("Let's chat! You can ask me about phishing, passwords, safe browsing, or just have a casual conversation.\nType 'help' if you need a list of things to ask.\n");
     }
 
     //**** CHAT LOOP ****//
@@ -141,101 +142,107 @@ class Program
                 continue;
             }
 
-            // Store in memory
             pastInputs.Add(input);
 
-            // Basic sentiment detection
-            bool isPositive = input.Contains("good") || input.Contains("great") || input.Contains("thanks");
-            bool isNegative = input.Contains("bad") || input.Contains("terrible") || input.Contains("hate") || input.Contains("annoying");
+            bool isPositive = input.Contains("good") || input.Contains("great") || input.Contains("thanks") || input.Contains("awesome") || input.Contains("cool");
+            bool isNegative = input.Contains("bad") || input.Contains("terrible") || input.Contains("hate") || input.Contains("annoying") || input.Contains("sad") || input.Contains("tired");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("I-S-A-A-C: ");
             Console.ResetColor();
 
-            // Memory-based reminders
-            if (pastInputs.Count(i => i.Contains("phishing")) > 2)
+            // Memory Recall
+            if (input.Contains("my name is") || input.Contains("call me"))
             {
-                SimulateTyping("You’ve asked about phishing a few times — remember to always double-check links!");
-            }
-            else if (pastInputs.Count(i => i.Contains("password")) > 2)
-            {
-                SimulateTyping("We’ve covered passwords quite a bit! Consider using a manager to help remember them.");
+                string[] parts = input.Split(' ');
+                string newName = parts.Last();
+                memory["userName"] = newName;
+                SimulateTyping($"Got it! I'll call you {newName} from now on.");
+                continue;
             }
 
-            // Sentiment responses
-            if (isPositive)
+            if (memory.ContainsKey("userName"))
             {
-                SimulateTyping("Glad to hear that! 😊");
+                userName = memory["userName"];
+            }
+
+            // Casual small talk
+            if (input.Contains("how are you") || input.Contains("what's up"))
+            {
+                string[] casualReplies = {
+                    "I'm just a bunch of code, but I'm feeling pretty electric today!",
+                    "All systems online and ready to chat.",
+                    "Always ready to help. How are you feeling today?",
+                    "Chilling in the cyber realm, doing my bot thing."
+                };
+                SimulateTyping(casualReplies[rand.Next(casualReplies.Length)]);
+            }
+            else if (isPositive)
+            {
+                SimulateTyping("That's awesome! What's making you feel that way?");
             }
             else if (isNegative)
             {
-                SimulateTyping("Sorry to hear that. If there’s anything I can do to help, let me know.");
-            }
-
-            // Keyword-based chatbot replies
-            if (input.Contains("how are you"))
-            {
-                SimulateTyping("I'm pretty good, could be better, but at least I'm always on the lookout for cyber threats!");
-            }
-            else if (input.Contains("your purpose"))
-            {
-                SimulateTyping("My job is to educate and help you through online safety practices.");
-            }
-            else if (input.Contains("password"))
-            {
-                string[] responses = {
-                    "Be creative and use strong passwords: 8+ characters, with a combination of letters, numbers, and symbols.",
-                    "Use different passwords for different accounts, and track them with a password manager.",
-                    "Use the auto-generated passwords, write them down securely or store them in a manager.",
-                    "Enable multi-factor authentication wherever you can. It’s a strong second layer of protection."
-                };
-                int index = rand.Next(responses.Length);
-                SimulateTyping(responses[index]);
+                SimulateTyping("I'm sorry to hear that. Want to talk about it?");
             }
             else if (input.Contains("phishing"))
             {
                 string[] responses = {
-                    "Phishing is when attackers trick you into giving up info. Always make sure emails are from legit people or companies.",
-                    "Double check if that email you received is from a trusted source before clicking links.",
-                    "Avoid emails asking for personal info — that’s a red flag.",
-                    "If something feels off in an email — trust your gut. Don't click suspicious links."
+                    "Phishing is a sneaky attempt to get your personal info. Always check who sent the email.",
+                    "Remember: no legit company will ask for your password via email.",
+                    "If it feels fishy, it probably is. Don't click on suspicious links.",
+                    "When in doubt, contact the company directly using their official site."
                 };
-                int index = rand.Next(responses.Length);
-                SimulateTyping(responses[index]);
+                SimulateTyping(responses[rand.Next(responses.Length)]);
+            }
+            else if (input.Contains("password"))
+            {
+                string[] responses = {
+                    "Strong passwords are like strong locks: long, complex, and unique.",
+                    "Consider a password manager to handle the chaos of passwords.",
+                    "Use different passwords for different accounts. One password to rule them all is not safe.",
+                    "Don’t forget: change your passwords regularly, especially for critical accounts."
+                };
+                SimulateTyping(responses[rand.Next(responses.Length)]);
             }
             else if (input.Contains("safe browsing"))
             {
                 string[] responses = {
-                    "Stick to secure sites (HTTPS), avoid shady links, and don’t download untrusted files.",
-                    "Use a trusted browser with security features, and always update it.",
-                    "Don’t download random files — even if it looks like a game mod or crack, it might be malware.",
-                    "Install an ad blocker and stay clear of sketchy popups."
+                    "Stay safe: stick to secure (HTTPS) sites, avoid shady popups.",
+                    "An ad blocker and regular software updates are your online shield.",
+                    "Be cautious of what you download — that free game might come with a virus.",
+                    "When in doubt, Google it. If it looks too good to be true, it probably is."
                 };
-                int index = rand.Next(responses.Length);
-                SimulateTyping(responses[index]);
+                SimulateTyping(responses[rand.Next(responses.Length)]);
             }
             else if (input.Contains("help"))
             {
                 DisplayHelp();
             }
-            else if (input.Contains("exit") || input.Contains("bye"))
+            else if (input.Contains("bye") || input.Contains("exit"))
             {
-                string[] responses = {
-                    "See you! Stay sharp and safe online.",
-                    "Our time was good while it lasted, I hope I helped, bye.",
-                    "Don't talk to strangers online who are asking for your personal information. See you, chief!",
-                    "Come again soon, byeeeee."
+                string[] goodbyes = {
+                    "Catch you later! Stay safe online.",
+                    "It's been great chatting. Remember, safety first!",
+                    "Goodbye for now! I'll be here when you need me.",
+                    "Logging off... but you know where to find me!"
                 };
-                int index = rand.Next(responses.Length);
-                SimulateTyping(responses[index]);
+                SimulateTyping(goodbyes[rand.Next(goodbyes.Length)]);
                 break;
             }
             else
             {
-                SimulateTyping("Hmm... I didn’t quite understand that. Type 'help' if you’re stuck.");
+                // Catch-all casual responses
+                string[] casualReplies = {
+                    "Tell me more about that.",
+                    "That's interesting! Can you elaborate?",
+                    "I hear you! What else is on your mind?",
+                    "Cool! Let's keep the conversation going."
+                };
+                SimulateTyping(casualReplies[rand.Next(casualReplies.Length)]);
             }
 
-            Console.WriteLine(); // Add spacing
+            Console.WriteLine();
         }
     }
 
@@ -261,11 +268,7 @@ class Program
         SimulateTyping("- 'safe browsing' → Stay protected while surfing online.");
         SimulateTyping("- 'how are you' → Have a casual chat with me.");
         SimulateTyping("- 'exit' or 'bye' → End our session.");
+        SimulateTyping("- Or just chat with me about anything!");
         Console.ResetColor();
     }
-
-    //**** FUTURE MODULE PLACEHOLDER ****//
-    // static void FutureFeature() { 
-    //     // You can build additional tools here later 
-    // }
 }
